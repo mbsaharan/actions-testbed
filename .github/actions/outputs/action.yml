@@ -1,0 +1,14 @@
+name: "My Composite Action"
+description: "Demonstrates how to define and use an output"
+
+outputs:
+  script-result:
+    description: "Result from the script"
+    value: ${{ steps.run-script.outputs.result }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: run-script
+      run: echo "result=Success" >> $GITHUB_OUTPUT
+      shell: bash
