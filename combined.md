@@ -7,6 +7,7 @@ documentation: "https://docs.github.com/en/actions/using-workflows/reusing-workf
 - [ ] The `GITHUB_TOKEN` permissions passed from the caller workflow can be only elevated by the called workflow.
 - [ ] The `GITHUB_TOKEN` permissions passed from the caller workflow can be both downgraded and elevated by the called workflow.
 - [ ] The `GITHUB_TOKEN` permissions passed from the caller workflow can be neither downgraded or elevated by the called workflow.
+
 ---
 question: "What are the different permission levels you can assign to `GITHUB_TOKEN` in the `permissions` block?"
 documentation: "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token"
@@ -15,6 +16,7 @@ documentation: "https://docs.github.com/en/actions/tutorials/authenticate-with-g
 - [x] none, write, read
 - [ ] read, write, delete
 - [ ] read, write
+
 ---
 question: "You can use `permissions` to modify the `GITHUB_TOKEN` permissions on:"
 documentation: "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token"
@@ -23,6 +25,7 @@ documentation: "https://docs.github.com/en/actions/tutorials/authenticate-with-g
 - [x] Workflow level
 - [x] Job level
 - [ ] Step level
+
 ---
 question: "Are GitHub Actions free for public repositories?"
 documentation: "https://docs.github.com/en/billing/concepts/product-billing/github-actions#how-use-of-github-actions-is-measured"
