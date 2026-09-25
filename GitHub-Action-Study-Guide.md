@@ -439,11 +439,11 @@ Using tags and commit SHAs ensures that consumers get a stable version of the ac
 
 **Correct Answer:**
 
-**(C)** Bash script action
+**(B)** Composite action
 
 **Explanation:**
 
-A Bash script action allows execution of shell commands directly without needing a Docker container or JavaScript.
+GitHub has only 3 types: Docker container, JavaScript, and Composite. The simplest for shell is Composite action.
 
 ---
 
@@ -485,7 +485,7 @@ Private repositories, workflow templates, and containerized custom actions help 
 **Options:**
 
 **(A)**
-  `run:`
+  `run: |`
   `  npm ci`
   `  npm run build`
 
@@ -497,7 +497,7 @@ Private repositories, workflow templates, and containerized custom actions help 
 **Correct Answer:**
 
 **(A)**
-  `run:`
+  `run: |`
   `  npm ci`
   `  npm run build`
 
@@ -969,18 +969,17 @@ GITHUB_ACTOR stores the name of the user or app that triggered the workflow.
 
 **(A)** Assign the custom labels to the self-hosted runner.
 
-**(E)** In the workflow, specify:
+**(B)** In the workflow, specify:
   ```yaml
-  runs-on: [ ${{groups.macos-10.15}}, ${{groups.xcode-11.2}} ]
+  runs-on: [ self-hosted, macos-10.15, xcode-11.2 ]
   ```
 
-**(C)** Add your runner to the appropriate runner groups.
+**(D)** Create custom runner labels for macos-10.15 and xcode-11.2.
 
 **Explanation:**
 
--Assigning custom labels allows you to differentiate the self-hosted runner from others.
--Specifying runs-on correctly ensures the workflow picks the right runner.
--Adding the runner to the appropriate groups helps in managing access control and usage.
+D + A: You first create the custom labels macos-10.15 and xcode-11.2 and assign them to that runner.
+B: Then you target them. When you specify an array of labels, jobs will be queued on runners that have all the labels that you specify.
 
 ---
 
@@ -1016,7 +1015,7 @@ GITHUB_ACTOR stores the name of the user or app that triggered the workflow.
   ```yaml
   jobs:
     deploy:
-      if: github.ref_name == 'refs/heads/feature-branch'
+      if: github.ref_name == 'feature-branch'
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
@@ -1041,11 +1040,11 @@ GITHUB_ACTOR stores the name of the user or app that triggered the workflow.
 
 **(C)** `uses: another-repo/workflow.yml@v1`
 
-**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml`
+**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml@v1`
 
 **Correct Answer:**
 
-**(B)** `uses: octo-org/another-repo/workflow.yml@v1`
+**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml@v1`
 
 **Explanation:**
 
@@ -1186,12 +1185,15 @@ GITHUB_ACTOR stores the name of the user or app that triggered the workflow.
 
 **Correct Answer:**
 
-**(B)** `${{ GITHUB_RUN_NUMBER }}`
+**(A)** `$GITHUB_RUN_NUMBER`
+**(D)** `${{ env.GITHUB_RUN_NUMBER }}`
 
 **Explanation:**
 
--GitHub Actions stores system variables in GITHUB_* context.
 -GITHUB_RUN_NUMBER provides a unique run number for each workflow execution.
+-${{ github.run_number }} — works everywhere.
+-${{ env.GITHUB_RUN_NUMBER }} — works only inside jobs/steps
+-$GITHUB_RUN_NUMBER — works only in shell
 
 ---
 
@@ -1456,7 +1458,7 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
 
 **Correct Answer:**
 
-**(B)** `with: python`
+**(D)** `shell: python`
 
 **Explanation:**
 
@@ -1632,11 +1634,15 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
 
 **Correct Answer:**
 
-**(B)** `${{ GITHUB_RUN_NUMBER }}`
+**(A)** `$GITHUB_RUN_NUMBER`
+**(D)** `${{ env.GITHUB_RUN_NUMBER }}`
 
 **Explanation:**
 
--GITHUB_RUN_NUMBER provides a unique identifier for each workflow run.
+-GITHUB_RUN_NUMBER provides a unique run number for each workflow execution.
+-${{ github.run_number }} — works everywhere.
+-${{ env.GITHUB_RUN_NUMBER }} — works only inside jobs/steps
+-$GITHUB_RUN_NUMBER — works only in shell
 
 ---
 
@@ -1777,13 +1783,12 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
   runs-on: [ self-hosted, macos-10.15, xcode-11.2 ]
   ```
 
-**(C)** Add your runner to the appropriate runner groups.
+**(D)** Create custom runner labels for macos-10.15 and xcode-11.2.
 
 **Explanation:**
 
--Labeling the runner ensures proper identification and allows workflows to select it based on OS and software version.
--Using runs-on: [...] in the workflow file directs the job to the appropriate runner.
--Grouping runners makes management easier.
+D + A: You first create the custom labels macos-10.15 and xcode-11.2 and assign them to that runner.
+B: Then you target them. When you specify an array of labels, jobs will be queued on runners that have all the labels that you specify.
 
 ---
 
@@ -1844,11 +1849,11 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
 
 **(C)** `uses: another-repo/workflow.yml@v1`
 
-**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml`
+**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml@v1`
 
 **Correct Answer:**
 
-**(B)** `uses: octo-org/another-repo/workflow.yml@v1`
+**(D)** `uses: octo-org/another-repo/.github/workflows/workflow.yml@v1`
 
 **Explanation:**
 
@@ -2017,13 +2022,13 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
 
 **Correct Answers:**
 
-**(B)** Create the group `custom-software-on-linux` and move the runner into the group.
+**(C)** Inform users to identify the runner with the labels `custom-software` and `linux`.
 
 **(E)** Add the label `custom-software` to the runner.
 
 **Explanation:**
 
--Grouping and labeling runners help users target the correct environment.
+-Group is for access control, not for targeting. You need to inform users to use the labels.
 
 ---
 
@@ -2045,11 +2050,15 @@ GitHub Enterprise allows strict control over action usage via internal marketpla
 
 **Correct Answer:**
 
-**(B)** `${{ GITHUB_RUN_NUMBER }}`
+**(A)** `$GITHUB_RUN_NUMBER`
+**(D)** `${{ env.GITHUB_RUN_NUMBER }}`
 
 **Explanation:**
 
--GITHUB_RUN_NUMBER stores the workflow run number, and ${{ ... }} syntax is used for expressions.
+-GITHUB_RUN_NUMBER provides a unique run number for each workflow execution.
+-${{ github.run_number }} — works everywhere.
+-${{ env.GITHUB_RUN_NUMBER }} — works only inside jobs/steps
+-$GITHUB_RUN_NUMBER — works only in shell
 
 ---
 
