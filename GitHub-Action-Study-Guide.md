@@ -2438,11 +2438,11 @@ B: Then you target them. When you specify an array of labels, jobs will be queue
 
 **Correct Answers:**
 
-**(A)** You must allow GitHub Actions's IP address ranges in order to use marketplace actions.
+**(C)** You can use GitHub-hosted larger runners since they can be configured with static IP addresses.
 
-**(D)**You can use self-hosted runners with known IP addresses.
+**(D)** You can use self-hosted runners with known IP addresses.
 
 **Supporting Statement:** 
-* Marketplace actions run on GitHub's infrastructure, so their IP addresses need to be allowed for communication.
+* (C) This is the new recommended way if you don't want self-hosted runners.
 * With self-hosted runners, you control the IP addresses, allowing you to add them explicitly to the allow list for security. 
 
