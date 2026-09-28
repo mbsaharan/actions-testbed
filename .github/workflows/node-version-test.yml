@@ -1,0 +1,31 @@
+name: CI Matrix Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # Matrix variables definition
+        version: [10, 12, 14]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Print current matrix configuration
+        run: |
+          echo "Running on OS: ${{ matrix.os }}"
+          echo "Using Node Version: ${{ matrix.version }}"
