@@ -1,0 +1,25 @@
+name: Test Shell Script with Bats
+
+on: [push, pull_request]
+
+jobs:
+  run-bats-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Bats
+        run: npm install -g bats
+
+      - name: Make scripts executable
+        run: chmod +x ./scripts/*.sh
+
+      - name: Run Bats test suite
+        run: bats test/test_math.bats
