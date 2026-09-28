@@ -1,0 +1,41 @@
+name: CI Matrix Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # Base matrix variables (Generates 3 x 2 = 6 combinations)
+        version: [10, 12, 14]
+        os: [ubuntu-latest, windows-latest]
+
+        # Exclude specific combinations from running
+        exclude:
+          # 1. Exclude Node 10 on Windows
+          - os: windows-latest
+            version: 10
+
+          # 2. Exclude Node 12 on Ubuntu
+          - os: ubuntu-latest
+            version: 12
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Print current matrix configuration
+        run: |
+          echo "Running on OS: ${{ matrix.os }}"
+          echo "Using Node Version: ${{ matrix.version }}"
