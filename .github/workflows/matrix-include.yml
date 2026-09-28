@@ -19,7 +19,7 @@ jobs:
         include:
           # Step 1: Add macOS to the matrix
           - os: macos-latest
-            version: 14
+            version: 20
 
           # Step 2: Add version 20 to the matrix
           - os: ubuntu-latest
