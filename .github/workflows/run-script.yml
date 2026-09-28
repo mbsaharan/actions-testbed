@@ -1,4 +1,4 @@
-name: External Script Execution Workflow
+name: Run External Bash Script
 
 on:
   push:
