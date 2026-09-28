@@ -1,0 +1,26 @@
+name: External Script Execution Workflow
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-script-job:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: "production"
+
+    steps:
+      # Step 1: MUST checkout the repository to pull your script file onto the runner host
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      # Step 2: Grant execution permissions (Linux runners require executable bit)
+      - name: Make Script Executable
+        run: chmod +x scripts/build.sh
+
+      # Step 3: Run the script directly via path
+      - name: Run build script
+        run: ./scripts/build.sh
+        shell: bash
