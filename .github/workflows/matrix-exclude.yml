@@ -1,4 +1,4 @@
-name: CI Matrix Test
+name: Matrix Exclude
 
 on:
   push:
