@@ -1,4 +1,4 @@
-name: Execute Custom Script
+name: Run External JavaScript
 
 on:
   push:
