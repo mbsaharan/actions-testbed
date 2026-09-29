@@ -1,7 +1,10 @@
 name: My first check reaction
-
-# This is the trigger - the part GH-200 will ask you about
 on:
+  workflow_run:
+    workflows: ["CodeQL Setup"] # <-- the name you saw in your screenshot
+    types:
+      - completed
+  # keep check_run too so you know both for GH-200
   check_run:
     types: [completed]
 
@@ -9,4 +12,7 @@ jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "A check just finished! Its name was ${{ github.event.check_run.name }} and result was ${{ github.event.check_run.conclusion }}"
+      - run: |
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "CodeQL conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Check name: ${{ github.event.check_run.name }}"
