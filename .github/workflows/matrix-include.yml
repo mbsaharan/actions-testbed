@@ -1,41 +1,26 @@
-name: CI Matrix Test
+name: Matrix Include
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch: 
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         # Base matrix variables
-        version: [10, 12, 14]
+        version: [1, 2]
         os: [ubuntu-latest, windows-latest]
-
         include:
-          # Step 1: Add macOS to the matrix
-          - os: macos-latest
-            version: 20
-
-          # Step 2: Add version 20 to the matrix
-          - os: ubuntu-latest
-            version: 20
-          - os: windows-latest
-            version: 20
-
+          - comment-color: "green" 
+          - error-color: "red" 
+          - os: "ubuntu-latest" 
+            comment-color: "blue" 
+          - os: "macos-latest" 
+            comment-color: "yellow" 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.version }}
-
       - name: Print current matrix configuration
         run: |
           echo "Running on OS: ${{ matrix.os }}"
