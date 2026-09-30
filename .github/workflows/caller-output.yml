@@ -1,0 +1,12 @@
+name: Reusable Output Caller Workflow
+on: [push]
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/reusable-output.yml
+
+  use-data:
+    needs: call-reusable
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Result was ${{ needs.call-reusable.outputs.compiled-result }}"
