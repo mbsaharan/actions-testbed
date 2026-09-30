@@ -21,17 +21,29 @@ jobs:
             images-v1-
 
       - name: Download Images from List
-        if: steps.image-cache.outputs.cache-hit != 'true'
+        if: steps.image-cache.outputs.cache-hit!= 'true'
+        shell: python
         run: |
-          echo "Cache miss for this URL list. Downloading..."
-          mkdir -p my-downloads
-          
-          while read -r url; do
-            [ -z "$url" ] && continue
-            filename=$(basename "${url%%\?*}")
-            echo " -> $url -> $filename"
-            curl -sL -f -o "my-downloads/$filename" "$url"
-          done < config/image-urls.txt
+          import urllib.request
+          from pathlib import Path
+
+          download_dir = Path("my-downloads")
+          download_dir.mkdir(exist_ok=True) # same as mkdir -p
+
+          print("Cache miss for this URL list. Downloading...")
+
+          with open("config/image-urls.txt") as f:
+              for line in f:
+                  url = line.strip()
+                  if not url: # same as [ -z "$url" ] && continue
+                      continue
+
+                  # same as basename "${url%%\?*}"
+                  filename = url.split("?")[0].split("/")[-1]
+                  dest = download_dir / filename
+
+                  print(f" -> {url} -> {filename}")
+                  urllib.request.urlretrieve(url, dest) # same as curl -o
 
       - name: Verify
         run: |
