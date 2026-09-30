@@ -1,0 +1,43 @@
+name: Status Check Examples
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Success Check Example
+      # Runs a step only if all preceding steps succeeded.
+      - name: 'Success Check Example: Build Code'
+        run: echo "Building code..."
+
+      - name: Deploy Code
+        if: ${{ success() }}
+        run: echo "Deploying code because the build succeeded!"
+
+      # Cancelled Check Example
+      # Runs a step only if the workflow run was canceled before completion.
+      - name: 'Cancelled Check Example: Execute Long Task'
+        run: sleep 60
+
+      - name: Cleanup Cancelled Run
+        if: ${{ cancelled() }}
+        run: echo "Cleaning up resources because the job was canceled."
+
+      # Failure Check Example
+      # Runs a step only if a previous step in the job failed.
+      - name: Run Test
+        run: exit 1 # Simulating a failed step
+
+      - name: Send Failure Alert
+        if: ${{ failure() }}
+        run: 'echo "Sending alert: A test step failed!"'
+
+      # Always Check Example
+      # Forces a step to run every time, regardless of whether prior steps succeeded, failed, or were canceled.
+      - name: Process Data
+        run: echo "Processing data..."
+
+      - name: Upload Logs
+        if: ${{ always() }}
+        run: echo "Uploading logs regardless of job outcome."
