@@ -1,0 +1,21 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    # WORKFLOW-LEVEL OUTPUT BLOCK
+    outputs:
+      compiled-result:
+        description: "The compiled output result"
+        value: ${{ jobs.build.outputs.artifact-id }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # JOB-LEVEL OUTPUT BLOCK (Required to expose step output to workflow scope)
+    outputs:
+      artifact-id: ${{ steps.step1.outputs.build_id }}
+    steps:
+      - id: step1
+        run: echo "build_id=1234" >> $GITHUB_OUTPUT
+
+# This workflow is part of caller-output.yml demonstration
