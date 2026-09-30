@@ -1,0 +1,19 @@
+name: Job Outputs Example
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Job-level outputs block
+    outputs:
+      output1: ${{ steps.step1.outputs.test_output }}
+    steps:
+      - id: step1
+        run: echo "test_output=hello_world" >> $GITHUB_OUTPUT
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - run: echo "The output from build was ${{ needs.build.outputs.output1 }}"
