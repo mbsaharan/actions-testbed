@@ -18,4 +18,4 @@ jobs:
       - id: step1
         run: echo "build_id=1234" >> $GITHUB_OUTPUT
 
-# This workflow is part of caller-output.yml demonstration
+# This workflow is part of workflow-level-output.yml demonstration
