@@ -1,0 +1,39 @@
+name: Cache From URL List
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  cache-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Image Folder
+        id: image-cache
+        uses: actions/cache@v4
+        with:
+          path: my-downloads
+          key: images-v1-${{ hashFiles('config/image-urls.txt') }}
+          restore-keys: |
+            images-v1-
+
+      - name: Download Images from List
+        if: steps.image-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache miss for this URL list. Downloading..."
+          mkdir -p my-downloads
+          
+          while read -r url; do
+            [ -z "$url" ] && continue
+            filename=$(basename "${url%%\?*}")
+            echo " -> $url -> $filename"
+            curl -sL -f -o "my-downloads/$filename" "$url"
+          done < config/image-urls.txt
+
+      - name: Verify
+        run: |
+          echo "Hash of url list: ${{ hashFiles('config/image-urls.txt') }}"
+          ls -lh my-downloads/
