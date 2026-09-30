@@ -1,0 +1,19 @@
+name: Post-Deploy Notification
+
+on:
+  workflow_run:
+    workflows: ["Build and Test"]   # Must match the name of the first workflow
+    types:
+      - completed                   # Triggers when the target workflow completes
+    branches:
+      - main                        # Optional: limit to specific branches
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    # Optional: ensure it only runs if the first workflow SUCCEEDED
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Send Slack Alert
+        run: |
+          echo "The workflow '${{ github.event.workflow_run.name }}' completed successfully!"
