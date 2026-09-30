@@ -1,0 +1,26 @@
+name: Shared Linting Workflow
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: false
+        type: string
+        default: '18'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Run Linter
+        run: echo "Linting code with Node ${{ inputs.node-version }}..."
+
+# This workflow is part of caller_workflow.yml demonstration
