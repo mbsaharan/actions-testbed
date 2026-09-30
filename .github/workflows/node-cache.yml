@@ -1,0 +1,42 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Step 3: Cache dependencies using hashFiles inside the cache key
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          # Directory where npm stores cached packages
+          path: ~/.npm
+          # Dynamic cache key containing the hash of package-lock.json
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          # Fallback keys if an exact cache match isn't found
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      # Step 4: Install dependencies (will use cached files from ~/.npm if key matched)
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 5: Run tests or build script
+      - name: Run tests
+        run: npm test
