@@ -1,0 +1,24 @@
+name: Dynamic Secret Masking Example
+
+on: [push]
+
+jobs:
+  mask-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate and Mask Secret
+        run: |
+          # 1. Fetch or generate the secret value
+          DECODED_SECRET=$(echo "c3VwZXJzZWNyZXRwYXNzd29yZA==" | base64 --decode)
+          
+          # 2. Tell GitHub Actions to mask this value in all future log output
+          echo "::add-mask::$DECODED_SECRET"
+          
+          # 3. Export to GITHUB_ENV so subsequent steps can use it
+          echo "MY_SECRET=$DECODED_SECRET" >> $GITHUB_ENV
+
+      - name: Verify Masking
+        run: |
+          # Even if you explicitly try to print the variable,
+          # GitHub Actions will print: "The secret is: ***"
+          echo "The secret is: $MY_SECRET"
