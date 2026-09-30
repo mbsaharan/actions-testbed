@@ -17,3 +17,5 @@ jobs:
       - name: Send Slack Alert
         run: |
           echo "The workflow '${{ github.event.workflow_run.name }}' completed successfully!"
+
+# This workflow is part of workflow-run-build.yml demonstration
