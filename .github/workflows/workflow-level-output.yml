@@ -1,4 +1,4 @@
-name: Reusable Output Caller Workflow
+name: Workflow Outputs Example
 on: [push]
 
 jobs:
@@ -10,3 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Result was ${{ needs.call-reusable.outputs.compiled-result }}"
+
+# This workflow is part of reusable-output.yml demonstration
