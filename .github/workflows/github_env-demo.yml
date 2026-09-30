@@ -1,0 +1,20 @@
+name: GITHUB_ENV Demo
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set API_VERSION dynamically
+        run: |
+          echo "API_VERSION=2.1" >> "$GITHUB_ENV"
+          echo "Set API_VERSION to 2.1"
+
+      - name: Use API_VERSION in next step
+        run: |
+          echo "Version from shell: $API_VERSION"
+          echo "Version from context: ${{ env.API_VERSION }}"
