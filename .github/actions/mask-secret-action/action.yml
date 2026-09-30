@@ -1,0 +1,9 @@
+name: 'Mask Base64 Secret'
+description: 'Decodes a base64 string and masks the result in GitHub Actions logs'
+inputs:
+  encoded_secret:
+    description: 'Base64 encoded secret string'
+    required: true
+runs:
+  using: 'node20'
+  main: 'index.js'
