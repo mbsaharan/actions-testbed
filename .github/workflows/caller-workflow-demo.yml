@@ -20,4 +20,4 @@ jobs:
       - name: Build Application
         run: echo "Building app after linting succeeds..."
 
-# This workflow is part of reusable-workflow.yml demonstration
+# This workflow is part of reusable-lint.yml demonstration
