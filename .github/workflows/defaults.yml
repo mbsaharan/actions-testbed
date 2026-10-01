@@ -1,0 +1,39 @@
+name: Example Workflow with Defaults
+
+on:
+  push:
+    branches:
+      - main
+
+# Top-level defaults apply to all jobs in the workflow
+defaults:
+  run:
+    shell: bash
+    working-directory: ./scripts
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Inherits 'shell: bash' and 'working-directory: ./scripts' from workflow defaults
+      - name: Run script in ./scripts directory
+        run: ./build.sh
+
+  override-defaults-job:
+    runs-on: ubuntu-latest
+    # Job-level defaults override top-level defaults for steps in this job
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ./src
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Uses PowerShell and executes inside ./src directory
+      - name: Run PowerShell script in ./src directory
+        run: Write-Output "Running inside ./src"
