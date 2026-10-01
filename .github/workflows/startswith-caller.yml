@@ -12,3 +12,5 @@ jobs:
     with:
       # Pass the current branch name (or ref) to the reusable workflow's input
       branch-name: ${{ github.ref_name }}
+
+# Push for smoke test
