@@ -1,0 +1,14 @@
+name: Caller Workflow
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  call-reusable-workflow:
+    # Path to the reusable workflow file (e.g., in .github/workflows/reusable.yml)
+    uses: ./.github/workflows/startswith-reusable.yml
+    with:
+      # Pass the current branch name (or ref) to the reusable workflow's input
+      branch-name: ${{ github.ref_name }}
