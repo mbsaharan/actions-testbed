@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: 
 
 # Top-level defaults apply to all jobs in the workflow
 defaults:
