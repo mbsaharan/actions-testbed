@@ -20,7 +20,7 @@ jobs:
 
       # Inherits 'shell: bash' and 'working-directory: ./scripts' from workflow defaults
       - name: Run script in ./scripts directory
-        run: ./build.sh
+        run: bash ./build.sh
 
   override-defaults-job:
     runs-on: ubuntu-latest
