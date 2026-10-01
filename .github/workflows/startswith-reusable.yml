@@ -1,0 +1,19 @@
+on:
+  workflow_call:
+    inputs:
+      branch-name:
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # This step only runs if branch-name starts with 'smoke-test'
+      - name: Run Smoke Tests
+        if: startsWith(inputs.branch-name, 'smoke-test')
+        run: echo "Running smoke tests for branch ${{ inputs.branch-name }}"
+
+      # Regular step that runs regardless
+      - name: General Step
+        run: echo "This step runs for all branches."
