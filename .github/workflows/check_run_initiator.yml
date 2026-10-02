@@ -7,13 +7,18 @@ on:
 jobs:
   create-check:
     runs-on: ubuntu-latest
-    permissions:
-      checks: write # Required permission to create a Check Run
 
     steps:
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Create a Completed Check Run via API
         env:
-          GH_TOKEN: ${{ secrets.MY_PAT_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh api -X POST /repos/${{ github.repository }}/check-runs \
             -f name="Security Scanner" \
