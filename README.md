@@ -1,1 +1,0 @@
-Khotan Franandez
