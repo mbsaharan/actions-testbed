@@ -1,0 +1,22 @@
+name: Listener - Process Check Run
+
+on:
+  check_run:
+    types: [completed, rerequested]
+
+jobs:
+  react-to-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Details
+        run: |
+          echo "Target Check Name: ${{ github.event.check_run.name }}"
+          echo "Event Action: ${{ github.event.action }}"
+          echo "Conclusion: ${{ github.event.check_run.conclusion }}"
+
+      - name: Alert Team on Security Failure
+        if: github.event.check_run.name == 'Security Scanner' && github.event.check_run.conclusion == 'failure'
+        run: |
+          echo "ALERT: The Security Scanner check failed!"
+          echo "Summary: ${{ github.event.check_run.output.summary }}"
+          # Call external Slack webhook or open a Jira ticket here
