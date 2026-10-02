@@ -1,0 +1,24 @@
+name: Initiator - Create Check Run
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  create-check:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write # Required permission to create a Check Run
+
+    steps:
+      - name: Create a Completed Check Run via API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X POST /repos/${{ github.repository }}/check-runs \
+            -f name="Security Scanner" \
+            -f head_sha="${{ github.event.pull_request.head.sha }}" \
+            -f status="completed" \
+            -f conclusion="failure" \
+            -f "output[title]=Security Scan Results" \
+            -f "output[summary]=Found 1 high-severity vulnerability."
