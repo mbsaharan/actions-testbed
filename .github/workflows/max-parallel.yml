@@ -1,0 +1,24 @@
+name: Max Parallel Matrix Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  example_matrix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Limits the maximum number of matrix jobs running concurrently to 2
+      max-parallel: 2
+      matrix:
+        version: [10, 12, 14]
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Print Job Details
+        run: |
+          echo "Running Node version ${{ matrix.version }} on ${{ matrix.os }}"
+
+      - name: Simulate Long Process
+        run: |
+          echo "Processing..."
+          sleep 10
