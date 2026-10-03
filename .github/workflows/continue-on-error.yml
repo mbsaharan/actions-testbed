@@ -1,0 +1,38 @@
+name: Continue-on-Error Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  step-level-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: First Step
+        run: echo "Starting execution..."
+
+      # Step-level continue-on-error
+      - name: Failing Step
+        continue-on-error: true
+        run: |
+          echo "This step will fail, but the job will keep running!"
+          exit 1
+
+      - name: Subsequent Step
+        run: echo "This step runs because continue-on-error was set to true above."
+
+  job-level-example:
+    runs-on: ubuntu-latest
+    # Job-level continue-on-error: if this entire job fails, downstream jobs won't be blocked
+    continue-on-error: true
+    steps:
+      - name: Unhandled Failure
+        run: |
+          echo "This entire job will fail."
+          exit 1
+
+  downstream-job:
+    needs: job-level-example
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Downstream Job
+        run: echo "This job runs despite 'job-level-example' failing."
