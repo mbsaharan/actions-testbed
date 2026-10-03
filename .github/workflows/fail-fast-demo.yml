@@ -1,0 +1,27 @@
+name: Fail-Fast Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["1", "1.2", "1.3"]
+
+    steps:
+      - name: Simulate work
+        run: |
+          echo "Testing version ${{ matrix.version }}"
+          sleep 5
+
+      - name: Intentionally fail version 1
+        if: ${{ matrix.version == '1' }}
+        run: |
+          echo "Simulating a build error on version 1!"
+          exit 1
+
+      - name: Finish remaining steps
+        run: echo "Job for version ${{ matrix.version }} completed successfully!"
